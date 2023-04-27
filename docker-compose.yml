@@ -1,0 +1,63 @@
+version: "3"
+services:
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+  #   environment:
+  #     - node.name=es-node
+  #     - discovery.type=single-node
+  #   ports:
+  #     - "9200:9200"
+  #     - "9300:9300"
+
+  query_service:
+    container_name: query_service
+    image: mosta1489/query_service:latest
+    # build: ./query-service
+    depends_on:
+      - rabbitmq
+    ports:
+      - 3000:3000
+    volumes:
+      - ./.env:/query_service/.env
+    networks:
+      get_tech_network:
+        ipv4_address: 172.25.0.5
+
+  data_queuing:
+    container_name: data_queuing
+    image: mosta1489/data_queuing:latest
+    # build: ./data-queuing-service
+    depends_on:
+      - rabbitmq
+      - query_service
+    ports:
+      - 3001:3001
+    volumes:
+      - ./.env:/data_queuing/.env
+      - ./data.json:/data_queuing/data.json
+    networks:
+      get_tech_network:
+        ipv4_address: 172.25.0.3
+
+  index_data:
+    container_name: index_data
+    image: mosta1489/index_data:latest
+    # build: ./index-data-service
+    depends_on:
+      - data_queuing
+      - rabbitmq
+      - query_service
+    volumes:
+      - ./.env:/index_data/.env
+    networks:
+      get_tech_network:
+        ipv4_address: 172.25.0.4
+
+networks:
+  get_tech_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/24
+          gateway: 172.25.0.1
