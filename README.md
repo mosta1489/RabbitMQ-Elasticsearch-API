@@ -82,6 +82,20 @@ chmod +x up.sh
 
 - Data Queuing Service: [http://172.190.14.21:8081](http://172.190.14.21:8081/all)
 
+## the docker images are available on docker hub:
+
+- query_service
+
+  - [https://hub.docker.com/repository/docker/mosta1489/query_service/general](https://hub.docker.com/repository/docker/mosta1489/query_service/general)
+
+- data_queuing_service
+
+  - [https://hub.docker.com/repository/docker/mosta1489/data_queuing/general](https://hub.docker.com/repository/docker/mosta1489/data_queuing/general)
+
+- index_data_service
+
+  - [https://hub.docker.com/repository/docker/mosta1489/index_data/general](https://hub.docker.com/repository/docker/mosta1489/index_data/general)
+
 ## Technologies
 
 - RabbitMQ
